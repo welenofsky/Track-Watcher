@@ -16,6 +16,7 @@ def get_tracks(user, client_id):
         return None
 
     content = page.read()
+    page.close()
 
     if content is None:
         return None
@@ -35,6 +36,7 @@ def get_last_track_history_time():
             print("Could not open track history file for writing\n")
 
     last_track_timestamp = track_history.read()
+    track_history.close()
 
     if last_track_timestamp:
         return last_track_timestamp
@@ -54,6 +56,7 @@ def set_last_track_history_time(created_at):
         print("Could not open track history file for writing\n")
 
     track_history.write(created_at)
+    track_history.close()
 
     return None
 
@@ -104,6 +107,8 @@ def main():
     if secrets:
         client_id = secrets.read()
         tracks = get_tracks("ytcracker", client_id)
+
+        secrets.close()
 
         if tracks:
             get_last_track_datetime(tracks)
