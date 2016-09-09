@@ -34,6 +34,7 @@ def get_last_track_history_time():
             track_history = open('history.txt', 'w+')
         except:
             print("Could not open track history file for writing\n")
+            return None
 
     last_track_timestamp = track_history.read()
     track_history.close()
@@ -54,6 +55,7 @@ def set_last_track_history_time(created_at):
         track_history = open('history.txt', 'w+')
     except:
         print("Could not open track history file for writing\n")
+        return None
 
     track_history.write(created_at)
     track_history.close()
@@ -69,6 +71,9 @@ def get_last_track_datetime(tracks):
 
     if len(parsed_tracks) > 0:
         last_track = parsed_tracks[0]
+    else:
+        print("Could not parse JSON")
+        exit()
 
     soundcloud_timestamp = last_track["created_at"]
     track_title = last_track["title"]
