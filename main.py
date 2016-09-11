@@ -105,7 +105,7 @@ def main():
     parser = argparse.ArgumentParser(description="Choose an artist to monitor new tracks of.")
     parser.add_argument("artist", metavar="ARTIST", type=str,
                         help="The name or ID of the artist you want to track.")
-    parser.add_argument("--t", metavar="TIMEOUT", nargs=1, type=int,
+    parser.add_argument("-t", metavar="TIMEOUT", type=int,
                         help="How long to wait for soundcloud API to respond in seconds.")
     args = parser.parse_args()
     artist  = args.artist
