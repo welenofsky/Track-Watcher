@@ -5,15 +5,15 @@ import argparse
 import json
 import time
 
-
 def get_tracks(user, client_id, timeout):
     endpoint = "http://api.soundcloud.com/users/{user}/tracks?client_id={id}"
     endpoint = endpoint.format(user=user, id=client_id)
 
     try:
         page = urllib.request.urlopen(endpoint, timeout=timeout)
-    except urllib.URLError as e:
-        print("Could not connet to soundcloud, error: " + e)
+    except urllib.error.HTTPError as e:
+        print("Could not connet to soundcloud, Error: " + str(e))
+        print("ENDPOINT: " + endpoint)
         return None
 
     content = page.read()
@@ -103,7 +103,7 @@ def get_last_track_datetime(tracks):
 
 def main():
     parser = argparse.ArgumentParser(description="Choose an artist to monitor new tracks of.")
-    parser.add_argument("artist", nargs=1, metavar="ARTIST", type=str,
+    parser.add_argument("artist", metavar="ARTIST", type=str,
                         help="The name or ID of the artist you want to track.")
     parser.add_argument("--t", metavar="TIMEOUT", nargs=1, type=int,
                         help="How long to wait for soundcloud API to respond in seconds.")
@@ -120,7 +120,7 @@ def main():
 
     if secrets:
         client_id = secrets.read()
-        tracks = get_tracks(artist, client_id, timeout)
+        tracks = get_tracks(artist, client_id, delay)
 
         secrets.close()
 
