@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import urllib.request
+import argparse
 import json
 import time
 
@@ -101,7 +102,17 @@ def get_last_track_datetime(tracks):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-a","-artist", help="The name or ID of the artist you want to track.")
+    args = parser.parse_args()
+    artist  = args.a
     secrets = None
+
+    if artist is None:
+        print("Please specify an artist name.");
+        exit()
+
+    artist = str(artist)
 
     try:
         secrets = open("secrets.txt", "r")
@@ -111,7 +122,7 @@ def main():
 
     if secrets:
         client_id = secrets.read()
-        tracks = get_tracks("ytcracker", client_id)
+        tracks = get_tracks(artist, client_id)
 
         secrets.close()
 
